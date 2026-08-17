@@ -72,9 +72,12 @@ CORS(
     app,
     resources={
         r"/*": {
-            "origins": os.getenv("FRONTEND_URL")
+            "origins": [
+                "http://localhost:5173"
+            ]
         }
-    }
+    },
+    supports_credentials=False
 )
 
 
