@@ -73,7 +73,8 @@ CORS(
     resources={
         r"/*": {
             "origins": [
-                "http://localhost:5173"
+                "http://localhost:5173",
+                "https://student-portal-frontend-apd1.onrender.com"
             ]
         }
     },
