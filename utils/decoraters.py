@@ -6,7 +6,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from models.user import User
 
 
-def role_required(*allowed_roles):
+def role_required(allowed_roles):
 
     def decorator(fn):
 
@@ -16,7 +16,7 @@ def role_required(*allowed_roles):
 
             user_id = get_jwt_identity()
 
-            user = db.session.get(User, user_id)
+            user = db.session.get(User, int(user_id))
 
             if not user:
                 return jsonify({
