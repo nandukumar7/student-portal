@@ -28,7 +28,43 @@ def get_users():
         user.to_dict()
         for user in users
     ]), 200
+@auth_bp.route("/users/<int:user_id>/role", methods=["PUT"])
+@jwt_required()
+@role_required(["admin"])
+def update_user_role(user_id):
 
+    data = request.get_json()
+
+    if not data:
+        return jsonify({
+            "error": "Request body is required"
+        }), 400
+
+    role = data.get("role")
+
+    allowed_roles = ["student", "teacher", "admin"]
+
+    if role not in allowed_roles:
+        return jsonify({
+            "error": "Invalid role",
+            "allowed_roles": allowed_roles
+        }), 400
+
+    user = db.session.get(User, user_id)
+
+    if not user:
+        return jsonify({
+            "error": "User not found"
+        }), 404
+
+    user.role = role
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "User role updated successfully",
+        "user": user.to_dict()
+    }), 200
 
 # =========================================================
 # LOGIN
